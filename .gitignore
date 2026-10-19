@@ -14,3 +14,7 @@ captures/
 .firecrawl/
 agent-tools/
 .kotlin/
+*.class
+*.log
+hs_err_pid*
+replay_pid*
