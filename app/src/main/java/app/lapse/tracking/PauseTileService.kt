@@ -21,7 +21,7 @@ class PauseTileService : TileService() {
     private fun render() {
         val tile = qsTile ?: return
         val paused = (application as LapseApp).preferences.paused
-        tile.label = "Lapse"
+        tile.label = "iScroll"
         tile.state = if (paused) Tile.STATE_INACTIVE else Tile.STATE_ACTIVE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tile.subtitle = if (paused) "Paused" else "Tracking"

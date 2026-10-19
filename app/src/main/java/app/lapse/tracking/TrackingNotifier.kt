@@ -20,7 +20,7 @@ class TrackingNotifier(private val context: Context) {
             "Tracking",
             NotificationManager.IMPORTANCE_LOW,
         ).apply {
-            description = "Pause or resume Lapse while it is counting."
+            description = "Pause or resume iScroll while it is counting."
             setShowBadge(false)
         }
         manager.createNotificationChannel(channel)
@@ -43,7 +43,7 @@ class TrackingNotifier(private val context: Context) {
         )
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_lapse)
-            .setContentTitle(if (paused) "Lapse is paused" else "Lapse is tracking")
+            .setContentTitle(if (paused) "iScroll is paused" else "iScroll is tracking")
             .setContentText(
                 if (paused) {
                     "Time and scrolls are waiting until you resume."

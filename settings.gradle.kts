@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "lapse"
+rootProject.name = "iScroll"
 include(":app")

@@ -13,3 +13,4 @@ captures/
 *.hprof
 .firecrawl/
 agent-tools/
+.kotlin/

@@ -44,7 +44,7 @@ fun SetupScreen(
     ) {
         Text(text = "Setup", style = MaterialTheme.typography.headlineMedium)
         Text(
-            text = "Lapse keeps a daily report on this phone: how long Instagram, YouTube, and Reddit stayed open, how many reels and Shorts you scrolled, and how many Reddit posts you moved past.",
+            text = "iScroll keeps a daily report on this phone: how long Instagram, YouTube, and Reddit stayed open, how many reels and Shorts you scrolled, and how many Reddit posts you moved past.",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -52,7 +52,7 @@ fun SetupScreen(
         SetupBlock(
             title = "Accessibility",
             body = if (accessibilityOn) {
-                "On. Lapse can see scrolls in the three apps."
+                "On. iScroll can see scrolls in the three apps."
             } else {
                 "Off. Reports stay empty until this is on."
             },
@@ -80,7 +80,7 @@ fun SetupScreen(
             body = if (notificationsOn) {
                 "On. The shade has Pause and Resume."
             } else {
-                "Allow notifications so you can pause without opening Lapse."
+                "Allow notifications so you can pause without opening iScroll."
             },
             action = if (notificationsOn) "Notification settings" else "Allow notifications",
             onAction = onRequestNotifications,
@@ -90,7 +90,7 @@ fun SetupScreen(
             body = if (batteryUnrestricted) {
                 "Unrestricted. Android is less likely to freeze the counter."
             } else {
-                "Set Lapse to unrestricted so the count survives while you scroll."
+                "Set iScroll to unrestricted so the count survives while you scroll."
             },
             action = if (batteryUnrestricted) "Battery settings" else "Allow background",
             onAction = onOpenBattery,
@@ -113,19 +113,19 @@ fun SetupScreen(
         )
         SectionLabel("Privacy")
         Text(
-            text = "Reports stay in private storage on this phone. Lapse has no account and no network access. Inside the three apps it reads view ids and short labels long enough to tell a viewer from a chat, then drops the words. It checks which app is open so the clock can stop, and it does not read the screen of anything else.",
+            text = "Reports stay in private storage on this phone. iScroll has no account and no network access. Inside the three apps it reads view ids and short labels long enough to tell a viewer from a chat, then drops the words. It checks which app is open so the clock can stop, and it does not read the screen of anything else.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         SectionLabel("Stopping")
         Text(
-            text = "Pause when you want a break and still want Lapse installed. Force stop from Android's app info screen also ends tracking until you open Lapse again. On some phones, force stop turns accessibility off and you enable it once more.",
+            text = "Pause when you want a break and still want iScroll installed. Force stop from Android's app info screen also ends tracking until you open iScroll again. On some phones, force stop turns accessibility off and you enable it once more.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         OutlinedButton(onClick = onOpenAppDetails) { Text("Open app info") }
         Text(
-            text = "Add the Lapse tile to Quick Settings if you want pause from the shade.",
+            text = "Add the iScroll tile to Quick Settings if you want pause from the shade.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

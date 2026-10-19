@@ -77,7 +77,7 @@ fun TodayScreen(
         ) {
             Column {
                 Text(
-                    text = "Lapse",
+                    text = "iScroll",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -136,7 +136,7 @@ fun TodayScreen(
         if (!accessibilityOn) {
             NoticeCard(
                 title = "Tracking is off",
-                body = "Turn on the Lapse accessibility service. Android uses that permission to let Lapse count scrolls inside Instagram, YouTube, and Reddit.",
+                body = "Turn on the iScroll accessibility service. Android uses that permission to let iScroll count scrolls inside Instagram, YouTube, and Reddit.",
                 modifier = Modifier.padding(top = 16.dp),
             )
             Button(
@@ -148,7 +148,7 @@ fun TodayScreen(
         } else if (paused) {
             NoticeCard(
                 title = "Paused",
-                body = "Time and scrolls are on hold. Resume here, from the notification, or from the Lapse Quick Settings tile.",
+                body = "Time and scrolls are on hold. Resume here, from the notification, or from the iScroll Quick Settings tile.",
                 modifier = Modifier.padding(top = 16.dp),
             )
         }

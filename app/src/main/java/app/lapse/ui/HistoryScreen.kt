@@ -43,7 +43,7 @@ fun HistoryScreen(
         ) {
             Text(text = "History", style = MaterialTheme.typography.headlineMedium)
             Text(
-                text = "No days on file yet. Lapse writes a line for each day it watches Instagram, YouTube, or Reddit.",
+                text = "No days on file yet. iScroll writes a line for each day it watches Instagram, YouTube, or Reddit.",
                 modifier = Modifier.padding(top = 12.dp),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -139,7 +139,7 @@ fun DayDetailScreen(
         }
         NoticeCard(
             title = "What this line includes",
-            body = "Time is counted while the app was on screen and Lapse was running. Reels, Shorts, and posts are counted from scrolls. A pause, a dark screen, or a force stop leaves a gap.",
+            body = "Time is counted while the app was on screen and iScroll was running. Reels, Shorts, and posts are counted from scrolls. A pause, a dark screen, or a force stop leaves a gap.",
             modifier = Modifier.padding(top = 20.dp),
         )
     }
