@@ -12,6 +12,10 @@ class PostPassCounter(
     private var lastKeys: List<String> = emptyList()
     private var lastActiveAt = 0L
 
+    /** Posts scrolled past since this visit started. The opening screen stays at zero. */
+    var session: Int = 0
+        private set
+
     fun onFeed(
         active: Boolean,
         fromIndex: Int,
@@ -34,6 +38,7 @@ class PostPassCounter(
             val delta = (fromIndex - lastFrom).coerceIn(0, 12)
             lastFrom = fromIndex
             if (visibleKeys.isNotEmpty()) lastKeys = visibleKeys
+            session += delta
             return delta
         }
         if (fromIndex >= 0) {
@@ -44,6 +49,7 @@ class PostPassCounter(
         if (visibleKeys.isNotEmpty() && lastKeys.isNotEmpty()) {
             val passed = passedKeys(lastKeys, visibleKeys)
             lastKeys = visibleKeys
+            session += passed
             return passed
         }
         if (visibleKeys.isNotEmpty()) lastKeys = visibleKeys
@@ -54,6 +60,7 @@ class PostPassCounter(
         lastFrom = -1
         primed = false
         lastKeys = emptyList()
+        session = 0
     }
 
     private fun passedKeys(previous: List<String>, current: List<String>): Int {

@@ -5,6 +5,10 @@ import android.graphics.PixelFormat
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -20,7 +24,7 @@ class CounterChip(private val context: Context) {
         val existing = view
         if (existing != null) {
             if (existing.text.toString() == text) return
-            existing.text = text
+            existing.text = styled(text)
             val layout = params ?: return
             try {
                 windowManager.updateViewLayout(existing, layout)
@@ -30,9 +34,9 @@ class CounterChip(private val context: Context) {
             return
         }
         val chip = TextView(context).apply {
-            this.text = text
+            this.text = styled(text)
             setTextColor(0xFFF4EFE6.toInt())
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
             typeface = Typeface.create("serif", Typeface.NORMAL)
             val padH = dp(14)
             val padV = dp(8)
@@ -77,6 +81,15 @@ class CounterChip(private val context: Context) {
             windowManager.removeView(chip)
         } catch (_: RuntimeException) {
             // Already detached.
+        }
+    }
+
+    private fun styled(text: String): CharSequence {
+        val split = text.indexOf(' ')
+        if (split <= 0) return text
+        return SpannableString(text).apply {
+            setSpan(AbsoluteSizeSpan(20, true), 0, split, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(StyleSpan(Typeface.BOLD), 0, split, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 

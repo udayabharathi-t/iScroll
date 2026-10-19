@@ -21,6 +21,15 @@ class FormatTest {
     }
 
     @Test
+    fun sessionChipUsesTheVisitCount() {
+        assertEquals("1 reel", sessionChip(Feed.INSTAGRAM_REELS, 1))
+        assertEquals("12 reels", sessionChip(Feed.INSTAGRAM_REELS, 12))
+        assertEquals("3 shorts", sessionChip(Feed.YOUTUBE_SHORTS, 3))
+        assertEquals("0 posts", sessionChip(Feed.REDDIT_FEED, 0))
+        assertEquals(null, sessionChip(Feed.NONE, 4))
+    }
+
+    @Test
     fun historyOmitsTheYearForTheCurrentYear() {
         val today = LocalDate.of(2026, 10, 19)
         assertEquals("Mon, Oct 19", formatHistoryDate(today, today))

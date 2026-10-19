@@ -70,6 +70,9 @@ data class EngineEffect(
     val posts: Int = 0,
     val surface: Surface = Surface.NONE,
     val feed: Feed = Feed.NONE,
+    val sessionReels: Int = 0,
+    val sessionShorts: Int = 0,
+    val sessionPosts: Int = 0,
 ) {
     val hasAnything: Boolean
         get() = !time.isZero || reels > 0 || shorts > 0 || posts > 0

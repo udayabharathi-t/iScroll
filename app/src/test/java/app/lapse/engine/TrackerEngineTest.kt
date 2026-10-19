@@ -50,6 +50,38 @@ class TrackerEngineTest {
     }
 
     @Test
+    fun reelSessionCountsThisVisitAndStartsOverAfterLeaving() {
+        val first = engine.observe(instagram(atMs = 1_000, author = "ada"), paused = false)
+        assertEquals(1, first.reels)
+        assertEquals(1, first.sessionReels)
+
+        val next = engine.observe(instagram(atMs = 2_000, author = "bob"), paused = false)
+        assertEquals(1, next.reels)
+        assertEquals(2, next.sessionReels)
+
+        val same = engine.observe(instagram(atMs = 3_000, author = "bob"), paused = false)
+        assertEquals(0, same.reels)
+        assertEquals(2, same.sessionReels)
+
+        val left = engine.observe(Observation("com.android.chrome", atMs = 5_000), paused = false)
+        assertEquals(0, left.sessionReels)
+
+        val again = engine.observe(instagram(atMs = 7_000, author = "ada"), paused = false)
+        assertEquals(1, again.sessionReels)
+    }
+
+    @Test
+    fun pauseEndsTheReelSession() {
+        engine.observe(instagram(atMs = 1_000, author = "ada"), paused = false)
+        engine.observe(instagram(atMs = 2_000, author = "bob"), paused = false)
+        val paused = engine.onPauseOrScreenOff(3_000)
+        assertEquals(0, paused.sessionReels)
+
+        val resumed = engine.observe(instagram(atMs = 5_000, author = "ada"), paused = false)
+        assertEquals(1, resumed.sessionReels)
+    }
+
+    @Test
     fun heartbeatAddsTimeWithoutAddingScrolls() {
         engine.observe(instagram(atMs = 1_000, author = "ada"), paused = false)
         val beat = engine.heartbeat(3_000, Packages.INSTAGRAM, paused = false, screenOn = true)

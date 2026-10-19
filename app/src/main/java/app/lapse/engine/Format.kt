@@ -24,6 +24,14 @@ fun plural(count: Int, singular: String, plural: String): String {
     return "$count ${if (count == 1) singular else plural}"
 }
 
+/** Label for the on-screen chip. [count] is this visit, not the daily total. */
+fun sessionChip(feed: Feed, count: Int): String? = when (feed) {
+    Feed.INSTAGRAM_REELS -> plural(count, "reel", "reels")
+    Feed.YOUTUBE_SHORTS -> plural(count, "short", "shorts")
+    Feed.REDDIT_FEED -> plural(count, "post", "posts")
+    Feed.NONE -> null
+}
+
 fun formatHeadingDate(day: LocalDate, locale: Locale = Locale.US): String {
     return day.format(DateTimeFormatter.ofPattern("EEEE, MMM d", locale))
 }

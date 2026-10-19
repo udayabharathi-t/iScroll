@@ -67,7 +67,7 @@ fun SetupScreen(
             Column(Modifier.weight(1f).padding(end = 12.dp)) {
                 Text(text = "Live count", style = MaterialTheme.typography.titleMedium)
                 Text(
-                    text = "A small counter at the top of Instagram, YouTube, and Reddit. It does not take taps, so it stays out of the way of scrolling.",
+                    text = "A small counter at the top of the viewer. It shows how many reels, Shorts, or posts are in this visit, then starts over when you leave. It does not take taps.",
                     modifier = Modifier.padding(top = 4.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,

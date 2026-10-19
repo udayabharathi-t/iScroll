@@ -18,6 +18,10 @@ class ItemAdvanceDetector(
     private var lastActiveAt = 0L
     private var awaitingSignature = false
 
+    /** Reels or Shorts counted since this visit started. */
+    var session: Int = 0
+        private set
+
     fun onSample(
         active: Boolean,
         signature: String?,
@@ -74,12 +78,14 @@ class ItemAdvanceDetector(
         inFeed = false
         lastSignature = null
         awaitingSignature = false
+        session = 0
     }
 
     private fun count(nowMs: Long): Int {
         val previous = lastCountAt
         if (previous != null && nowMs - previous < minGapMs) return 0
         lastCountAt = nowMs
+        session += 1
         return 1
     }
 }

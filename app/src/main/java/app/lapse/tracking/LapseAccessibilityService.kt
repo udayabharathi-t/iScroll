@@ -13,13 +13,12 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import app.lapse.LapseApp
-import app.lapse.data.DayReport
 import app.lapse.engine.EngineEffect
 import app.lapse.engine.Feed
 import app.lapse.engine.Observation
 import app.lapse.engine.Packages
 import app.lapse.engine.TrackerEngine
-import app.lapse.engine.plural
+import app.lapse.engine.sessionChip
 import java.time.LocalDate
 
 /**
@@ -42,6 +41,7 @@ class LapseAccessibilityService : AccessibilityService() {
     private var lastWalkAt = 0L
     private var chipFeed = Feed.NONE
     private var chipFeedUntil = 0L
+    private var chipLabel: String? = null
     private var receiverRegistered = false
     private var prefListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
     private var started = false
@@ -220,16 +220,16 @@ class LapseAccessibilityService : AccessibilityService() {
                 Log.w(TAG, "Could not write the daily report", error)
             }
         }
-        if (touchChip) renderChip(effect.feed)
+        if (touchChip) renderChip(effect)
     }
 
-    private fun renderChip(feed: Feed) {
+    private fun renderChip(effect: EngineEffect) {
         val prefs = (application as LapseApp).preferences
         val now = System.currentTimeMillis()
-        val shown = if (feed != Feed.NONE) {
-            chipFeed = feed
+        val shown = if (effect.feed != Feed.NONE) {
+            chipFeed = effect.feed
             chipFeedUntil = now + CHIP_HOLD_MS
-            feed
+            effect.feed
         } else if (now < chipFeedUntil) {
             chipFeed
         } else {
@@ -241,14 +241,16 @@ class LapseAccessibilityService : AccessibilityService() {
             else chip.hide()
             return
         }
-        val report = runCatching { (application as LapseApp).store.today() }.getOrNull() ?: return
-        val text = chipText(shown, report) ?: return
-        chip.show(text)
+        val live = sessionChip(effect.feed, effect.sessionCount(effect.feed))
+        if (live != null) chipLabel = live
+        val text = if (effect.feed == shown) live else chipLabel
+        if (text != null) chip.show(text)
     }
 
     private fun clearChip() {
         chipFeed = Feed.NONE
         chipFeedUntil = 0L
+        chipLabel = null
         if (::chip.isInitialized) chip.hide()
     }
 
@@ -312,12 +314,12 @@ class LapseAccessibilityService : AccessibilityService() {
         private const val HEARTBEAT_MS = 2_000L
         private const val WALK_GAP_MS = 200L
         private const val CHIP_HOLD_MS = 1_500L
-
-        fun chipText(feed: Feed, report: DayReport): String? = when (feed) {
-            Feed.INSTAGRAM_REELS -> plural(report.reels, "reel", "reels")
-            Feed.YOUTUBE_SHORTS -> plural(report.shorts, "short", "shorts")
-            Feed.REDDIT_FEED -> plural(report.posts, "post", "posts")
-            Feed.NONE -> null
-        }
     }
+}
+
+private fun EngineEffect.sessionCount(feed: Feed): Int = when (feed) {
+    Feed.INSTAGRAM_REELS -> sessionReels
+    Feed.YOUTUBE_SHORTS -> sessionShorts
+    Feed.REDDIT_FEED -> sessionPosts
+    Feed.NONE -> 0
 }

@@ -20,7 +20,7 @@ Download `app-release.apk` from the [latest release](https://github.com/udayabha
 
 Chats, comment threads, and browser tabs are not scroll counts. Opening a feed does not count the posts already on screen. Pausing, turning the screen off, or force-stopping iScroll ends the count until you come back.
 
-The live counter is a small chip at the top of those apps. It does not take taps. Turn it off in Setup if you only want the report.
+The live counter is a small chip at the top of the viewer. It shows how many reels, Shorts, or posts are in this visit, and starts over when you leave, pause, or turn the screen off. It does not take taps. Turn it off in Setup if you only want the daily report.
 
 ## Pause and force stop
 
