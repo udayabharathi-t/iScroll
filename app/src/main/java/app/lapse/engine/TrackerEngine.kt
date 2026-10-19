@@ -71,6 +71,8 @@ class TrackerEngine(
             viewportHeight = scroll?.viewportHeight ?: 0,
             scrollConfirms = FeedSignals.scrollConfirmsPager(Feed.INSTAGRAM_REELS, scroll),
             nowMs = observation.atMs,
+            fromIndex = scroll?.fromIndex ?: -1,
+            scrollDeltaX = scroll?.scrollDeltaX ?: 0,
         )
         val shortDelta = shorts.onSample(
             active = feed == Feed.YOUTUBE_SHORTS,
@@ -79,6 +81,8 @@ class TrackerEngine(
             viewportHeight = scroll?.viewportHeight ?: 0,
             scrollConfirms = FeedSignals.scrollConfirmsPager(Feed.YOUTUBE_SHORTS, scroll),
             nowMs = observation.atMs,
+            fromIndex = scroll?.fromIndex ?: -1,
+            scrollDeltaX = scroll?.scrollDeltaX ?: 0,
         )
         val postDelta = posts.onFeed(
             active = feed == Feed.REDDIT_FEED,

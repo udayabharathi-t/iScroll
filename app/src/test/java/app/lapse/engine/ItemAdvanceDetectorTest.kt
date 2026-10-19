@@ -49,6 +49,24 @@ class ItemAdvanceDetectorTest {
     }
 
     @Test
+    fun smallScrollEventsAddUpToOneReel() {
+        sample(active = true, signature = null, now = 1_000)
+        assertEquals(0, sample(active = true, signature = null, delta = 300, height = 2_000, confirms = true, now = 2_000))
+        assertEquals(0, sample(active = true, signature = null, delta = 300, height = 2_000, confirms = true, now = 2_400))
+        assertEquals(0, sample(active = true, signature = null, delta = 300, height = 2_000, confirms = true, now = 2_800))
+        assertEquals(1, sample(active = true, signature = null, delta = 300, height = 2_000, confirms = true, now = 3_200))
+    }
+
+    @Test
+    fun pageIndexAdvancesOneReel() {
+        assertEquals(1, sample(active = true, signature = null, fromIndex = 4, now = 1_000))
+        assertEquals(
+            1,
+            sample(active = true, signature = null, delta = 80, height = 2_000, confirms = true, fromIndex = 5, now = 2_000),
+        )
+    }
+
+    @Test
     fun aScrollOutsideTheViewerDoesNotCount() {
         sample(active = true, signature = "ig:ada", now = 1_000)
         assertEquals(
@@ -86,6 +104,7 @@ class ItemAdvanceDetectorTest {
         delta: Int = 0,
         height: Int = 0,
         confirms: Boolean = false,
+        fromIndex: Int = -1,
         now: Long,
-    ): Int = detector.onSample(active, signature, delta, height, confirms, now)
+    ): Int = detector.onSample(active, signature, delta, height, confirms, now, fromIndex)
 }

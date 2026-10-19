@@ -126,6 +126,7 @@ class LapseAccessibilityService : AccessibilityService() {
                 eventToIndex = event.toIndex,
                 itemCount = event.itemCount,
                 scrollDeltaY = event.scrollDeltaY,
+                scrollDeltaX = event.scrollDeltaX,
                 includeKeys = packageName == Packages.REDDIT,
             )
         } else {
@@ -133,7 +134,7 @@ class LapseAccessibilityService : AccessibilityService() {
         }
         val signals = if (shouldWalk(event.eventType, now)) {
             lastWalkAt = now
-            reader.read(rootInActiveWindow).also { lastSignals = it }
+            trackedSignals().also { lastSignals = it }
         } else {
             lastSignals
         }
@@ -188,6 +189,46 @@ class LapseAccessibilityService : AccessibilityService() {
             }
             PauseTileService.requestRefresh(this)
         }
+    }
+
+    private fun trackedSignals(): List<app.lapse.engine.NodeSignal> {
+        val roots = ArrayList<android.view.accessibility.AccessibilityNodeInfo>(4)
+        try {
+            val listed = windows
+            if (listed.isNullOrEmpty()) {
+                rootInActiveWindow?.let { roots.add(it) }
+            } else {
+                for (window in listed) {
+                    val root = try {
+                        window.root
+                    } catch (_: RuntimeException) {
+                        null
+                    } ?: continue
+                    val pkg = try {
+                        root.packageName?.toString()
+                    } catch (_: RuntimeException) {
+                        null
+                    }
+                    if (pkg != null && Packages.isTracked(pkg)) roots.add(root) else root.recycle()
+                }
+            }
+        } catch (_: RuntimeException) {
+            roots.forEach { node -> runCatching { node.recycle() } }
+            return lastSignals
+        }
+        if (roots.isEmpty()) {
+            val active = rootInActiveWindow ?: return emptyList()
+            return reader.read(active)
+        }
+        val out = ArrayList<app.lapse.engine.NodeSignal>(80)
+        for (root in roots) {
+            if (out.size >= 360) {
+                runCatching { root.recycle() }
+                continue
+            }
+            out += reader.read(root)
+        }
+        return out
     }
 
     private fun foregroundPackage(): String? {

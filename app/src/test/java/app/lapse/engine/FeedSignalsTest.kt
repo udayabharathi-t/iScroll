@@ -39,6 +39,59 @@ class FeedSignalsTest {
     }
 
     @Test
+    fun instagramPagerMarkedInvisibleStillCountsAsReels() {
+        val signals = listOf(
+            NodeSignal(
+                viewId = "com.instagram.android:id/clips_viewer_view_pager",
+                visible = false,
+                width = 1080,
+                height = 2000,
+                top = 0,
+            ),
+        )
+        assertEquals(Feed.INSTAGRAM_REELS, FeedSignals.classify(Packages.INSTAGRAM, signals, null))
+    }
+
+    @Test
+    fun verticalViewPagerScrollIsReelsWithoutAKnownId() {
+        val scroll = ScrollSignal(
+            className = "androidx.viewpager2.widget.ViewPager2\$RecyclerViewImpl",
+            fromIndex = 3,
+            toIndex = 3,
+            itemCount = 20,
+            scrollDeltaY = 400,
+            viewportHeight = 2000,
+        )
+        assertEquals(Feed.INSTAGRAM_REELS, FeedSignals.classify(Packages.INSTAGRAM, emptyList(), scroll))
+    }
+
+    @Test
+    fun horizontalPagerIsNotReels() {
+        val scroll = ScrollSignal(
+            className = "androidx.viewpager2.widget.ViewPager2",
+            fromIndex = 1,
+            toIndex = 2,
+            scrollDeltaX = 900,
+            scrollDeltaY = 12,
+            viewportHeight = 2000,
+        )
+        assertEquals(Feed.NONE, FeedSignals.classify(Packages.INSTAGRAM, emptyList(), scroll))
+    }
+
+    @Test
+    fun homeFeedListIsNotReels() {
+        val scroll = ScrollSignal(
+            className = "androidx.recyclerview.widget.RecyclerView",
+            fromIndex = 2,
+            toIndex = 5,
+            itemCount = 40,
+            scrollDeltaY = 800,
+            viewportHeight = 2000,
+        )
+        assertEquals(Feed.NONE, FeedSignals.classify(Packages.INSTAGRAM, emptyList(), scroll))
+    }
+
+    @Test
     fun reelsTabLabelAloneIsNotTheViewer() {
         val signals = listOf(
             NodeSignal(text = "Reels", visible = true, width = 200, height = 80),

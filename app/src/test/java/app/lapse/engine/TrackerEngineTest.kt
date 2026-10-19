@@ -71,6 +71,38 @@ class TrackerEngineTest {
     }
 
     @Test
+    fun instagramSwipesCountWithoutAReelLabel() {
+        val first = engine.observe(instagramPager(atMs = 1_000, from = 0, deltaY = 300), paused = false)
+        assertEquals(Feed.INSTAGRAM_REELS, first.feed)
+        assertEquals(1, first.reels)
+
+        val next = engine.observe(instagramPager(atMs = 2_000, from = 1, deltaY = 120), paused = false)
+        assertEquals(1, next.reels)
+        assertEquals(2, next.sessionReels)
+    }
+
+    @Test
+    fun instagramHomeScrollIsTimeOnly() {
+        val home = engine.observe(
+            Observation(
+                packageName = Packages.INSTAGRAM,
+                atMs = 1_000,
+                scroll = ScrollSignal(
+                    className = "androidx.recyclerview.widget.RecyclerView",
+                    fromIndex = 2,
+                    toIndex = 5,
+                    itemCount = 40,
+                    scrollDeltaY = 800,
+                    viewportHeight = 2_000,
+                ),
+            ),
+            paused = false,
+        )
+        assertEquals(Feed.NONE, home.feed)
+        assertEquals(0, home.reels)
+    }
+
+    @Test
     fun pauseEndsTheReelSession() {
         engine.observe(instagram(atMs = 1_000, author = "ada"), paused = false)
         engine.observe(instagram(atMs = 2_000, author = "bob"), paused = false)
@@ -121,6 +153,19 @@ class TrackerEngineTest {
                 width = 1080,
                 height = 2000,
             ),
+        ),
+    )
+
+    private fun instagramPager(atMs: Long, from: Int, deltaY: Int) = Observation(
+        packageName = Packages.INSTAGRAM,
+        atMs = atMs,
+        scroll = ScrollSignal(
+            className = "androidx.viewpager2.widget.ViewPager2\$RecyclerViewImpl",
+            fromIndex = from,
+            toIndex = from,
+            itemCount = 30,
+            scrollDeltaY = deltaY,
+            viewportHeight = 2_000,
         ),
     )
 

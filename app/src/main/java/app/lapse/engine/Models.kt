@@ -39,6 +39,7 @@ data class ScrollSignal(
     val toIndex: Int = -1,
     val itemCount: Int = -1,
     val scrollDeltaY: Int = 0,
+    val scrollDeltaX: Int = 0,
     val viewportHeight: Int = 0,
     val visibleItemKeys: List<String> = emptyList(),
 ) {

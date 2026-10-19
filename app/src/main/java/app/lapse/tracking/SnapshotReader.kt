@@ -35,8 +35,16 @@ class SnapshotReader {
         return out
     }
 
-    fun readScroll(source: AccessibilityNodeInfo?, eventFromIndex: Int, eventToIndex: Int, itemCount: Int, scrollDeltaY: Int, includeKeys: Boolean): ScrollSignal? {
-        if (source == null && eventFromIndex < 0 && scrollDeltaY == 0) return null
+    fun readScroll(
+        source: AccessibilityNodeInfo?,
+        eventFromIndex: Int,
+        eventToIndex: Int,
+        itemCount: Int,
+        scrollDeltaY: Int,
+        scrollDeltaX: Int,
+        includeKeys: Boolean,
+    ): ScrollSignal? {
+        if (source == null && eventFromIndex < 0 && scrollDeltaY == 0 && scrollDeltaX == 0) return null
         return try {
             val bounds = Rect()
             source?.getBoundsInScreen(bounds)
@@ -47,6 +55,7 @@ class SnapshotReader {
                 toIndex = eventToIndex,
                 itemCount = itemCount,
                 scrollDeltaY = scrollDeltaY,
+                scrollDeltaX = scrollDeltaX,
                 viewportHeight = bounds.height(),
                 visibleItemKeys = if (includeKeys) childKeys(source) else emptyList(),
             )
@@ -131,7 +140,7 @@ class SnapshotReader {
     }
 
     private companion object {
-        const val MAX_NODES = 120
-        const val MAX_DEPTH = 14
+        const val MAX_NODES = 240
+        const val MAX_DEPTH = 30
     }
 }
