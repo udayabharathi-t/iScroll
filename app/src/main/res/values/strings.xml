@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lapse</string>
+    <string name="tile_label">Lapse</string>
+    <string name="accessibility_description">Counts Instagram reels, YouTube Shorts, and Reddit posts you scroll past, and measures how long those apps are on screen. Lapse reads view ids and short labels inside those apps to tell a viewer from a chat. It notices when you switch away so the clock can stop, without reading other apps. Reports stay on this phone.</string>
+</resources>
