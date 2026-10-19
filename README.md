@@ -6,6 +6,10 @@ It keeps a daily report of time spent in Instagram, YouTube, and Reddit. It coun
 
 Reports stay on the phone. The app has no account and does not request network access.
 
+## Install
+
+Download `app-release.apk` from the [latest release](https://github.com/udayabharathi-t/iScroll/releases/latest). Install it, then turn on the iScroll accessibility service.
+
 ## What a day contains
 
 | App | Time | Scrolls |
